@@ -1,0 +1,43 @@
+ {
+    "parser": "babel-eslint",
+    "extends": [
+        "standard",
+        "standard-react",
+        "prettier",
+        "prettier/react"
+    ],
+    "plugins": [
+        "babel",
+        "react",
+        "react-hooks",
+        "promise",
+        "prettier",
+        "jest-dom",
+    ],
+    "env": {
+        "browser": true,
+        "jest": true
+    },
+    "rules": {
+        "prettier/prettier": "error",
+        "dot-notation": "off",
+        "react/jsx-handler-names": "off",
+        "react/jsx-key": "off",
+        "react/jsx-curly-brace-presence": "off",
+        "prefer-const": [
+            "error",
+            {
+                "destructuring": "any",
+                "ignoreReadBeforeAssign": false
+            }
+        ],
+        "curly": ["error", "all"],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}
