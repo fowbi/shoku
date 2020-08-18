@@ -32,8 +32,6 @@ const Timeline = (props) => {
   return <div className={classes.timeline}>{children}</div>;
 };
 
-Timeline.propTypes = {
-  children: PropTypes.objectOf(PropTypes.any),
-};
+Timeline.propTypes = { children: PropTypes.node };
 
 export default Timeline;

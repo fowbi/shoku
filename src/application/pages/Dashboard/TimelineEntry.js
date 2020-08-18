@@ -84,8 +84,6 @@ const TimelineEntry = (props) => {
   );
 };
 
-TimelineEntry.propTypes = {
-  meal: PropTypes.objectOf(PropTypes.any),
-};
+TimelineEntry.propTypes = { meal: PropTypes.objectOf(PropTypes.any) };
 
 export default TimelineEntry;

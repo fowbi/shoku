@@ -15,7 +15,7 @@ const Page = ({ component }) => {
 };
 
 Page.propTypes = {
-  component: PropTypes.objectOf(PropTypes.any).isRequired,
+  component: PropTypes.func.isRequired,
 };
 
 export default Page;
