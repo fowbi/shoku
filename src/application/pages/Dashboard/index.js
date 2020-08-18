@@ -1,35 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import Timeline from './Timeline';
 import TimelineEntry from './TimelineEntry';
+import api from '../../../api';
 
 const Dashboard = () => {
-  const dummyData = [
-    {
-      what: '',
-      when: '',
-      location: '',
-      type: 'breakfast',
-    },
-    {
-      what: '',
-      when: '',
-      location: '',
-      type: 'dinner',
-    },
-    {
-      what: 'Coffee',
-      when: '2020-07-31 07:15:00',
-      location: 'Paul',
-      type: 'drink',
-    },
-  ];
+  const [meals, setMeals] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await api.meals(moment());
+      setMeals(result.data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
       <h1>dashboard</h1>
       <Timeline>
-        {dummyData.map((m) => (
-          <TimelineEntry meal={m} />
+        {meals.map((meal) => (
+          <TimelineEntry meal={meal} key={meal.id} />
         ))}
       </Timeline>
     </>
