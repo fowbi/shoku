@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const useStyles = makeStyles((theme) => ({
   timeline: {
     width: '95%',
-    maxWidth: '1170px',
+    // maxWidth: '1170px',
     margin: '0 auto',
     position: 'relative',
     padding: '2em 0',

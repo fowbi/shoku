@@ -6,11 +6,9 @@ const Page = ({ component }) => {
   const ComponentToRender = component;
 
   return (
-    <>
-      <Container maxWidth="lg">
-        <ComponentToRender />
-      </Container>
-    </>
+    <Container maxWidth={false}>
+      <ComponentToRender />
+    </Container>
   );
 };
 
