@@ -18,14 +18,26 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = (props) => {
   const classes = useStyles(props);
 
-  const now = moment('2020-08-01');
+  const now = moment();
   const [meals, setMeals] = useState([]);
   const [date, setDate] = useState(now);
+  const [title, setTitle] = useState('');
+
+  const determineTitle = (date) => {
+    if (moment().isSame(date, 'day')) {
+      return 'Today';
+    }
+    if (moment().subtract(1, 'days').isSame(date, 'day')) {
+      return 'Yesterday';
+    }
+    return date.format('dddd, MMMM Do YYYY');
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await api.meals(date);
       setMeals(result.data);
+      setTitle(determineTitle(date));
     };
 
     fetchData();
@@ -38,7 +50,7 @@ const Dashboard = (props) => {
 
   return (
     <>
-      <h1>dashboard</h1>
+      <h1>{title}</h1>
       <Timeline>
         {meals.map((meal) => (
           <TimelineEntry meal={meal} key={meal.id} />
