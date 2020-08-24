@@ -27,6 +27,10 @@ Api.prototype.addMeal = async function (meal) {
   return await this.apiClient.post('/meal', meal);
 };
 
+Api.prototype.deleteMeal = async function (id) {
+  return await this.apiClient.delete(`/meal/${id}`);
+};
+
 const api = new Api(apiAxiosClient);
 
 export default api;

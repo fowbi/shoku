@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TimelineEntry = (props) => {
-  const { meal } = props;
+  const { meal, deleteMealAction } = props;
   const classes = useStyles(props);
   let icon;
 
@@ -80,7 +80,7 @@ const TimelineEntry = (props) => {
         <CardHeader
           className={classes.head}
           action={
-            <IconButton aria-label="settings">
+            <IconButton aria-label="settings" onClick={deleteMealAction}>
               <DeleteIcon color="primary" />
             </IconButton>
           }
@@ -98,6 +98,9 @@ const TimelineEntry = (props) => {
   );
 };
 
-TimelineEntry.propTypes = { meal: PropTypes.objectOf(PropTypes.any) };
+TimelineEntry.propTypes = {
+  meal: PropTypes.objectOf(PropTypes.any),
+  deleteMealAction: PropTypes.func.isRequired,
+};
 
 export default TimelineEntry;

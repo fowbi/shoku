@@ -8,6 +8,7 @@ import ElevationScroll from '../../shared/ElevationScroll';
 import Timeline from './Timeline';
 import TimelineEntry from './TimelineEntry';
 import AddMealDialog from './AddMealDialog';
+import DeleteMealDialog from './DeleteMealDialog';
 import api from '../../../api';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +33,9 @@ const Dashboard = (props) => {
   const [meals, setMeals] = useState([]);
   const [date, setDate] = useState(now);
   const [title, setTitle] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openAddDialog, setOpenAddDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [deleteUuid, setDeleteUuid] = useState(null);
 
   const determineTitle = (date) => {
     if (moment().isSame(date, 'day')) {
@@ -60,11 +63,21 @@ const Dashboard = (props) => {
   };
 
   const addMeal = () => {
-    setOpenDialog(true);
+    setOpenAddDialog(true);
+  };
+
+  const deleteMeal = (id) => {
+    setDeleteUuid(id);
+    setOpenDeleteDialog(true);
   };
 
   const addMealSuccess = () => {
-    setOpenDialog(false);
+    setOpenAddDialog(false);
+    setDate(moment().clone());
+  };
+
+  const deleteMealSuccess = () => {
+    setOpenDeleteDialog(false);
     setDate(moment().clone());
   };
 
@@ -73,7 +86,7 @@ const Dashboard = (props) => {
       <h1>{title}</h1>
       <Timeline>
         {meals.map((meal) => (
-          <TimelineEntry meal={meal} key={meal.id} />
+          <TimelineEntry meal={meal} key={meal.id} deleteMealAction={() => deleteMeal(meal.id)} />
         ))}
       </Timeline>
       <Toolbar />
@@ -105,9 +118,16 @@ const Dashboard = (props) => {
       </ElevationScroll>
       <AddMealDialog
         date={date}
-        handleClose={() => setOpenDialog(false)}
-        open={openDialog}
+        handleClose={() => setOpenAddDialog(false)}
+        open={openAddDialog}
         onSuccess={addMealSuccess}
+      />
+      <DeleteMealDialog
+        id={deleteUuid}
+        message="delete message"
+        handleClose={() => setOpenDeleteDialog(false)}
+        open={openDeleteDialog}
+        onSuccess={deleteMealSuccess}
       />
     </>
   );
