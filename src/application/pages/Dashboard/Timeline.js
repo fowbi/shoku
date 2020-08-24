@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     // maxWidth: '1170px',
     margin: '0 auto',
     position: 'relative',
-    padding: '2em 0',
+    padding: '1em 0',
     '&::before': {
       content: "''",
       position: 'absolute',

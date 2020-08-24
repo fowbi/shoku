@@ -41,6 +41,12 @@ const useStyles = makeStyles((theme) => ({
     width: '16px',
     position: 'relative',
   },
+  head: {
+    padding: '16px 16px 0px 16px',
+  },
+  content: {
+    padding: '0px 16px',
+  },
 }));
 
 const TimelineEntry = (props) => {
