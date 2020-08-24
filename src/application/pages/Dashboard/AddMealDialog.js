@@ -20,7 +20,7 @@ import { mealTypeOptions } from '../../shared/MealType';
 // const useStyles = makeStyles((theme) => ({}));
 
 const AddMealDialog = (props) => {
-  const { date, handleClose, open } = props;
+  const { date, handleClose, open, onSuccess } = props;
   // const classes = useStyles(props);
 
   const [formData, setFormData] = useState({
@@ -47,12 +47,14 @@ const AddMealDialog = (props) => {
   };
 
   const handleAddMeal = () => {
-    api.addMeal({
-      type: formData.type,
-      what: formData.what,
-      when: formData.when.format('YYYY-MM-DD hh:mm:ss'),
-      location: formData.location,
-    });
+    api
+      .addMeal({
+        type: formData.type,
+        what: formData.what,
+        when: formData.when.format('YYYY-MM-DD HH:mm:ss'),
+        location: formData.location,
+      })
+      .then(() => onSuccess());
   };
 
   return (
@@ -87,7 +89,7 @@ const AddMealDialog = (props) => {
               disableToolbar
               disableFuture
               variant="inline"
-              format="YYYY-MM-DD hh:mm:ss"
+              format="YYYY-MM-DD HH:mm:ss"
               margin="normal"
               id="when"
               ampm={false}
@@ -118,6 +120,7 @@ AddMealDialog.propTypes = {
   date: PropTypes.instanceOf(Date).isRequired,
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  onSuccess: PropTypes.func.isRequired,
 };
 
 export default AddMealDialog;

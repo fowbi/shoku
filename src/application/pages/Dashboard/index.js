@@ -63,6 +63,11 @@ const Dashboard = (props) => {
     setOpenDialog(true);
   };
 
+  const addMealSuccess = () => {
+    setOpenDialog(false);
+    setDate(moment().clone());
+  };
+
   return (
     <>
       <h1>{title}</h1>
@@ -98,7 +103,12 @@ const Dashboard = (props) => {
           </Toolbar>
         </AppBar>
       </ElevationScroll>
-      <AddMealDialog date={date} handleClose={() => setOpenDialog(false)} open={openDialog} />
+      <AddMealDialog
+        date={date}
+        handleClose={() => setOpenDialog(false)}
+        open={openDialog}
+        onSuccess={addMealSuccess}
+      />
     </>
   );
 };
