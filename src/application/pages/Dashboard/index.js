@@ -47,6 +47,8 @@ const Dashboard = (props) => {
     return date.format('dddd, MMMM Do YYYY');
   };
 
+  const isInFuture = () => date.isSameOrAfter(moment(), 'day');
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await api.meals(date);
@@ -107,11 +109,13 @@ const Dashboard = (props) => {
                 <AddIcon />
               </Fab>
 
-              <Grid item>
-                <IconButton edge="end" color="secondary" aria-label="next" onClick={() => navigate('next')}>
-                  <NavigateNextIcon />
-                </IconButton>
-              </Grid>
+              {!isInFuture() && (
+                <Grid item>
+                  <IconButton edge="end" color="secondary" aria-label="next" onClick={() => navigate('next')}>
+                    <NavigateNextIcon />
+                  </IconButton>
+                </Grid>
+              )}
             </Grid>
           </Toolbar>
         </AppBar>
