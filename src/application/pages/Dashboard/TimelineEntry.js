@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment-timezone';
 import { Card, CardContent, SvgIcon, Typography, makeStyles } from '@material-ui/core';
 import { mdiGlassPintOutline, mdiBreadSliceOutline, mdiFoodAppleOutline, mdiRice } from '@mdi/js';
 import PropTypes from 'prop-types';
@@ -76,7 +77,7 @@ const TimelineEntry = (props) => {
 
           <hr color="white" />
           <Typography variant="caption" gutterBottom>
-            {meal.type} | {meal.when} | {meal.location}
+            {meal.type} | {moment(meal.when).format('hh:mm:ss')} | {meal.location}
           </Typography>
         </CardContent>
       </Card>
