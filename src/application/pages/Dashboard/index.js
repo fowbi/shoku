@@ -1,17 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import moment from 'moment';
-import { AppBar, Grid, IconButton, Toolbar, makeStyles } from '@material-ui/core';
+import moment from 'moment-timezone';
+import { AppBar, Fab, Grid, IconButton, Toolbar, makeStyles } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import ElevationScroll from '../../shared/ElevationScroll';
 import Timeline from './Timeline';
 import TimelineEntry from './TimelineEntry';
+import AddMealDialog from './AddMealDialog';
 import api from '../../../api';
 
 const useStyles = makeStyles((theme) => ({
   navigation: {
     bottom: '0px',
     top: 'inherit',
+  },
+  fabButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
   },
 }));
 
@@ -22,6 +32,7 @@ const Dashboard = (props) => {
   const [meals, setMeals] = useState([]);
   const [date, setDate] = useState(now);
   const [title, setTitle] = useState('');
+  const [openDialog, setOpenDialog] = useState(false);
 
   const determineTitle = (date) => {
     if (moment().isSame(date, 'day')) {
@@ -48,6 +59,10 @@ const Dashboard = (props) => {
     setDate(newDate.clone());
   };
 
+  const addMeal = () => {
+    setOpenDialog(true);
+  };
+
   return (
     <>
       <h1>{title}</h1>
@@ -66,13 +81,16 @@ const Dashboard = (props) => {
               spacing={24}
             >
               <Grid item>
-                <IconButton edge="start" color="inherit" aria-label="previous" onClick={() => navigate('previous')}>
+                <IconButton edge="start" color="secondary" aria-label="previous" onClick={() => navigate('previous')}>
                   <NavigateBeforeIcon />
                 </IconButton>
               </Grid>
+              <Fab color="secondary" aria-label="add" className={classes.fabButton} onClick={() => addMeal()}>
+                <AddIcon />
+              </Fab>
 
               <Grid item>
-                <IconButton edge="end" color="next" onClick={() => navigate('next')}>
+                <IconButton edge="end" color="secondary" aria-label="next" onClick={() => navigate('next')}>
                   <NavigateNextIcon />
                 </IconButton>
               </Grid>
@@ -80,6 +98,7 @@ const Dashboard = (props) => {
           </Toolbar>
         </AppBar>
       </ElevationScroll>
+      <AddMealDialog date={date} handleClose={() => setOpenDialog(false)} open={openDialog} />
     </>
   );
 };

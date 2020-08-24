@@ -23,6 +23,10 @@ Api.prototype.meals = async function (date) {
   return await this.apiClient.get(`/user/meals/${formattedDate}`);
 };
 
+Api.prototype.addMeal = async function (meal) {
+  return await this.apiClient.post('/meal', meal);
+};
+
 const api = new Api(apiAxiosClient);
 
 export default api;
