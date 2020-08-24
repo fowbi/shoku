@@ -90,7 +90,7 @@ const TimelineEntry = (props) => {
         <CardContent className={classes.content}>
           <hr color="white" />
           <Typography variant="caption">
-            {meal.type} | {moment(meal.when).format('hh:mm:ss')} | {meal.location}
+            {meal.type} | {moment(meal.when).format('hh:mm A')} | {meal.location}
           </Typography>
         </CardContent>
       </Card>
