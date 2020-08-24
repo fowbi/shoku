@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment-timezone';
-import { Card, CardContent, SvgIcon, Typography, makeStyles } from '@material-ui/core';
+import { Card, CardContent, CardHeader, IconButton, SvgIcon, Typography, makeStyles } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/DeleteOutline';
 import { mdiGlassPintOutline, mdiBreadSliceOutline, mdiFoodAppleOutline, mdiRice } from '@mdi/js';
 import PropTypes from 'prop-types';
 
@@ -76,13 +77,19 @@ const TimelineEntry = (props) => {
         </SvgIcon>
       </span>
       <Card className={classes.timelineEntryContent}>
-        <CardContent>
-          <Typography variant="body1" gutterBottom>
-            {meal.what}
-          </Typography>
-
+        <CardHeader
+          className={classes.head}
+          action={
+            <IconButton aria-label="settings">
+              <DeleteIcon color="primary" />
+            </IconButton>
+          }
+          titleTypographyProps={{ variant: 'body' }}
+          title={meal.what}
+        />
+        <CardContent className={classes.content}>
           <hr color="white" />
-          <Typography variant="caption" gutterBottom>
+          <Typography variant="caption">
             {meal.type} | {moment(meal.when).format('hh:mm:ss')} | {meal.location}
           </Typography>
         </CardContent>
