@@ -24,7 +24,7 @@ Api.prototype.meals = async function (date) {
 };
 
 Api.prototype.addMeal = async function (meal) {
-  return await this.apiClient.post('/meal', meal);
+  return await this.apiClient.post('/meal/addMeal', meal);
 };
 
 Api.prototype.deleteMeal = async function (id) {
