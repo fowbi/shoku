@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment-timezone';
 import { Card, CardContent, CardHeader, IconButton, SvgIcon, Typography, makeStyles } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/DeleteOutline';
@@ -19,6 +19,50 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
     borderRadius: '50%',
+    zIndex: 1001,
+  },
+  good: {
+    backgroundColor: 'green !important',
+  },
+  meh: {
+    backgroundColor: 'orange !important',
+  },
+  bad: {
+    backgroundColor: 'red !important',
+  },
+  chooseExperience: {
+    position: 'absolute',
+    zIndex: 1000,
+    padding: '5px 5px 5px 50px',
+    marginTop: '-5px',
+    marginLeft: '-5px',
+  },
+  chooseExperienceOpen: {
+    pointerEvents: 'auto',
+    backgroundColor: theme.palette.secondary.main,
+    borderTopRightRadius: '10%',
+    borderBottomRightRadius: '10%',
+    border: '1px solid white',
+  },
+  chooseExperienceClosed: {
+    transition: 'top 0s linear 0.2s',
+    pointerEvents: 'none',
+  },
+  timelineEntryIconOption: {
+    width: '40px',
+    height: '40px',
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+    borderRadius: '50%',
+    marginLeft: '5px',
+  },
+  timelineEntryIconOptionOpen: {
+    opacity: 1,
+    transition: 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, opacity 0.8s',
+    transitionDelay: '0ms, 0s',
+  },
+  timelineEntryIconOptionClosed: {
+    opacity: 0,
   },
   timelineEntryContent: {
     position: 'relative',
@@ -34,6 +78,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '-12px',
     left: '50%',
     top: '50%',
+    display: 'block',
+  },
+  optionSvg: {
+    position: 'relative',
+    width: '24px',
+    height: '24px',
     display: 'block',
   },
   captionSvg: {
@@ -53,6 +103,10 @@ const useStyles = makeStyles((theme) => ({
 const TimelineEntry = (props) => {
   const { meal, deleteMealAction } = props;
   const classes = useStyles(props);
+  const [open, setOpen] = useState(false);
+  const [experienceStatusClass, setExperienceStatusClass] = useState(classes.chooseExperienceClosed);
+  const [iconOptionStatusClass, setIconOptionStatusClass] = useState(classes.timelineEntryIconOptionClosed);
+
   let icon;
 
   switch (meal.type) {
@@ -69,13 +123,57 @@ const TimelineEntry = (props) => {
       icon = mdiRice;
   }
 
+  const toggleOptions = () => {
+    if (open) {
+      setOpen(false);
+      setExperienceStatusClass(classes.chooseExperienceClosed);
+      setIconOptionStatusClass(classes.timelineEntryIconOptionClosed);
+    } else {
+      setOpen(true);
+      setExperienceStatusClass(classes.chooseExperienceOpen);
+      setIconOptionStatusClass(classes.timelineEntryIconOptionOpen);
+    }
+  };
+
   return (
     <div className={classes.timelineEntry}>
-      <span className={classes.timelineEntryIcon}>
-        <SvgIcon className={classes.svg}>
-          <path d={icon} />
-        </SvgIcon>
-      </span>
+      <div>
+        <span className={classes.timelineEntryIcon}>
+          <SvgIcon className={classes.svg} onClick={toggleOptions}>
+            <path d={icon} />
+          </SvgIcon>
+        </span>
+        <div
+          className={`${classes.chooseExperience} ${experienceStatusClass}`}
+          role="menu"
+          aria-orientation="horizontal"
+        >
+          <IconButton
+            aria-label="good"
+            className={`${classes.timelineEntryIconOption} ${classes.good} ${iconOptionStatusClass}`}
+          >
+            <SvgIcon className={classes.optionSvg}>
+              <path d={icon} />
+            </SvgIcon>
+          </IconButton>
+          <IconButton
+            aria-label="meh"
+            className={`${classes.timelineEntryIconOption} ${classes.meh} ${iconOptionStatusClass}`}
+          >
+            <SvgIcon className={classes.optionSvg}>
+              <path d={icon} />
+            </SvgIcon>
+          </IconButton>
+          <IconButton
+            aria-label="good"
+            className={`${classes.timelineEntryIconOption} ${classes.bad} ${iconOptionStatusClass}`}
+          >
+            <SvgIcon className={classes.optionSvg}>
+              <path d={icon} />
+            </SvgIcon>
+          </IconButton>
+        </div>
+      </div>
       <Card className={classes.timelineEntryContent}>
         <CardHeader
           className={classes.head}
