@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment-timezone';
 import { Card, CardContent, CardHeader, IconButton, SvgIcon, Typography, makeStyles } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/DeleteOutline';
 import { mdiGlassPintOutline, mdiBreadSliceOutline, mdiFoodAppleOutline, mdiRice } from '@mdi/js';
 import PropTypes from 'prop-types';
+import api from '../../../api';
+import { GOOD, MEH, BAD, UNKNOWN } from '../../shared/MealQuality';
 
 const useStyles = makeStyles((theme) => ({
   timelineEntry: {
@@ -106,6 +108,7 @@ const TimelineEntry = (props) => {
   const [open, setOpen] = useState(false);
   const [experienceStatusClass, setExperienceStatusClass] = useState(classes.chooseExperienceClosed);
   const [iconOptionStatusClass, setIconOptionStatusClass] = useState(classes.timelineEntryIconOptionClosed);
+  const [mealQuality, setMealQuality] = useState(UNKNOWN);
 
   let icon;
 
@@ -135,10 +138,35 @@ const TimelineEntry = (props) => {
     }
   };
 
+  const setQuality = (quality) => {
+    api.setMealQuality(meal.id, quality);
+    toggleOptions();
+    setMealQuality(determineMealQualityStatus(quality));
+  };
+
+  const determineMealQualityStatus = (quality) => {
+    switch (quality) {
+      case GOOD:
+        return classes.good;
+      case MEH:
+        return classes.meh;
+      case BAD:
+        return classes.bad;
+      case UNKNOWN:
+      default:
+        return '';
+    }
+  };
+
+  useEffect(() => {
+    setMealQuality(determineMealQualityStatus(meal.quality));
+    // eslint-disable-next-line
+  }, [meal.quality]);
+
   return (
     <div className={classes.timelineEntry}>
       <div>
-        <span className={classes.timelineEntryIcon}>
+        <span className={`${classes.timelineEntryIcon} ${mealQuality}`}>
           <SvgIcon className={classes.svg} onClick={toggleOptions}>
             <path d={icon} />
           </SvgIcon>
@@ -151,6 +179,7 @@ const TimelineEntry = (props) => {
           <IconButton
             aria-label="good"
             className={`${classes.timelineEntryIconOption} ${classes.good} ${iconOptionStatusClass}`}
+            onClick={() => setQuality(GOOD)}
           >
             <SvgIcon className={classes.optionSvg}>
               <path d={icon} />
@@ -159,6 +188,7 @@ const TimelineEntry = (props) => {
           <IconButton
             aria-label="meh"
             className={`${classes.timelineEntryIconOption} ${classes.meh} ${iconOptionStatusClass}`}
+            onClick={() => setQuality(MEH)}
           >
             <SvgIcon className={classes.optionSvg}>
               <path d={icon} />
@@ -167,6 +197,7 @@ const TimelineEntry = (props) => {
           <IconButton
             aria-label="good"
             className={`${classes.timelineEntryIconOption} ${classes.bad} ${iconOptionStatusClass}`}
+            onClick={() => setQuality(BAD)}
           >
             <SvgIcon className={classes.optionSvg}>
               <path d={icon} />
