@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getAccessToken } from '../utils/localStorage';
 
 const apiAxiosClient = axios.create({
   baseURL: `${process.env.REACT_APP_BACKEND}`,
@@ -14,9 +15,18 @@ apiAxiosClient.interceptors.response.use((response) => {
   return response;
 });
 
+apiAxiosClient.interceptors.request.use((request) => {
+  request.headers['Authorization'] = `Bearer ${getAccessToken()}`;
+  return request;
+});
+
 function Api(apiClient) {
   this.apiClient = apiClient;
 }
+
+Api.prototype.signUp = async function (data) {
+  return await this.apiClient.post('/user/register', data);
+};
 
 Api.prototype.meals = async function (date) {
   const formattedDate = date.format('YYYY-MM-DD');
