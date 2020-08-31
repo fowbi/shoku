@@ -28,6 +28,10 @@ Api.prototype.signUp = async function (data) {
   return await this.apiClient.post('/user/register', data);
 };
 
+Api.prototype.signIn = async function (data) {
+  return await this.apiClient.post('/user/login', data);
+};
+
 Api.prototype.meals = async function (date) {
   const formattedDate = date.format('YYYY-MM-DD');
   return await this.apiClient.get(`/user/meals/${formattedDate}`);
