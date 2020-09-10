@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment-timezone';
 import { AppBar, Fab, Grid, IconButton, Toolbar, makeStyles } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import ElevationScroll from '../../shared/ElevationScroll';
 import Timeline from './Timeline';
 import TimelineEntry from './TimelineEntry';
 import AddMealDialog from './AddMealDialog';
 import DeleteMealDialog from './DeleteMealDialog';
+import UpdateMealQuantityDialog from './UpdateMealQuantityDialog';
 import api from '../../../api';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +36,9 @@ const Dashboard = (props) => {
   const [title, setTitle] = useState('');
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [deleteUuid, setDeleteUuid] = useState(null);
+  const [openUpdateQuantityDialog, setOpenUpdateQuantityDialog] = useState(false);
+  const [uuid, setUuid] = useState(null);
+  const [currentQuantity, setCurrentQuantity] = useState(1);
 
   const determineTitle = (date) => {
     if (moment().isSame(date, 'day')) {
@@ -69,8 +72,14 @@ const Dashboard = (props) => {
   };
 
   const deleteMeal = (id) => {
-    setDeleteUuid(id);
+    setUuid(id);
     setOpenDeleteDialog(true);
+  };
+
+  const updateMealQuantity = (id, quantity) => {
+    setUuid(id);
+    setCurrentQuantity(quantity);
+    setOpenUpdateQuantityDialog(true);
   };
 
   const addMealSuccess = () => {
@@ -83,12 +92,22 @@ const Dashboard = (props) => {
     setDate(moment().clone());
   };
 
+  const updateMealQuantitySuccess = () => {
+    setOpenUpdateQuantityDialog(false);
+    setDate(moment().clone());
+  };
+
   return (
     <>
       <h1>{title}</h1>
       <Timeline>
         {meals.map((meal) => (
-          <TimelineEntry meal={meal} key={meal.id} deleteMealAction={() => deleteMeal(meal.id)} />
+          <TimelineEntry
+            meal={meal}
+            key={meal.id}
+            deleteMealAction={() => deleteMeal(meal.id)}
+            updateMealQuantityAction={() => updateMealQuantity(meal.id, meal.quantity)}
+          />
         ))}
       </Timeline>
       <Toolbar />
@@ -127,11 +146,18 @@ const Dashboard = (props) => {
         onSuccess={addMealSuccess}
       />
       <DeleteMealDialog
-        id={deleteUuid}
+        id={uuid}
         message="delete message"
         handleClose={() => setOpenDeleteDialog(false)}
         open={openDeleteDialog}
         onSuccess={deleteMealSuccess}
+      />
+      <UpdateMealQuantityDialog
+        id={uuid}
+        quantity={currentQuantity}
+        handleClose={() => setOpenUpdateQuantityDialog(false)}
+        open={openUpdateQuantityDialog}
+        onSuccess={updateMealQuantitySuccess}
       />
     </>
   );

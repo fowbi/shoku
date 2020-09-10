@@ -9,8 +9,8 @@ import { GOOD, MEH, BAD, UNKNOWN } from '../../shared/MealQuality';
 
 const useStyles = makeStyles((theme) => ({
   timelineEntry: {
-    position: 'relative',
     margin: '2em 0',
+    position: 'relative',
   },
   timelineEntryIcon: {
     position: 'absolute',
@@ -100,10 +100,13 @@ const useStyles = makeStyles((theme) => ({
   content: {
     padding: '0px 16px',
   },
+  quantityUpdate: {
+    cursor: 'pointer',
+  },
 }));
 
 const TimelineEntry = (props) => {
-  const { meal, deleteMealAction } = props;
+  const { meal, deleteMealAction, updateMealQuantityAction } = props;
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
   const [experienceStatusClass, setExperienceStatusClass] = useState(classes.chooseExperienceClosed);
@@ -219,7 +222,10 @@ const TimelineEntry = (props) => {
         <CardContent className={classes.content}>
           <hr color="white" />
           <Typography variant="caption">
-            {meal.type} | {moment(meal.when).format('hh:mm A')} | {meal.location}
+            <span className={classes.quantityUpdate} onClick={updateMealQuantityAction}>
+              x {meal.quantity}
+            </span>{' '}
+            | {meal.type} | {moment(meal.when).format('hh:mm A')} | {meal.location}
           </Typography>
         </CardContent>
       </Card>
@@ -230,6 +236,7 @@ const TimelineEntry = (props) => {
 TimelineEntry.propTypes = {
   meal: PropTypes.objectOf(PropTypes.any),
   deleteMealAction: PropTypes.func.isRequired,
+  updateMealQuantityAction: PropTypes.func.isRequired,
 };
 
 export default TimelineEntry;
