@@ -40,8 +40,12 @@ Api.prototype.signUp = async function (data) {
   return await this.apiClient.post('/user/register', data);
 };
 
-Api.prototype.signIn = async function (data) {
-  return await this.apiClient.post('/user/login', data);
+Api.prototype.signIn = function (data) {
+  return this.apiClient.post('/user/login', data);
+};
+
+Api.prototype.profile = function () {
+  return this.apiClient.post('/user/profile');
 };
 
 Api.prototype.meals = async function (date) {

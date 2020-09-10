@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import Router from './Router';
+import { fetchUser as fetchUserAction } from '../../domain/User/actions';
 
-function App() {
+function App(props) {
+  const { fetchUser } = props;
   const theme = createMuiTheme({
     palette: {
       primary: {
@@ -21,6 +26,10 @@ function App() {
     },
   });
 
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -31,4 +40,10 @@ function App() {
     </>
   );
 }
-export default App;
+
+App.propTypes = { fetchUser: PropTypes.func.isRequired };
+
+const mapStateToProps = createStructuredSelector({});
+const mapDispatchToProps = { fetchUser: fetchUserAction };
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

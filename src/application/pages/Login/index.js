@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { withRouter, NavLink } from 'react-router-dom';
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { NavLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-import { get } from 'lodash/fp';
 import {
   Avatar,
   Box,
@@ -22,8 +23,9 @@ import {
 import MuiAlert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
+import { authenticate as authenticateAction } from './actions';
+import { selectHasError } from './selectors';
 import Copyright from '../../shared/Copyright';
-import api from '../../../api';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -55,44 +57,14 @@ const schema = yup.object().shape({
 });
 
 const Login = (props) => {
-  const { history } = props;
+  const { authenticate, hasError } = props;
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   });
   const classes = useStyles();
 
-  const [openAlert, setOpenAlert] = useState(false);
-  const [alertType, setAlertType] = useState('success');
-  const [alertMessage, setAlertMessage] = useState('');
-
-  const handleCloseAlert = () => {
-    if (alertType === 'success') {
-      history.push('/');
-    } else {
-      setOpenAlert(false);
-    }
-  };
-
   const handleSignIn = (data) => {
-    api
-      .signIn({
-        username: data.username,
-        password: data.password,
-      })
-      .then((response) => {
-        console.log(response);
-        setOpenAlert(true);
-        setAlertType('success');
-        setAlertMessage('Login successful');
-
-        const token = get('x-auth-token', response.headers);
-        localStorage.setItem('token', token);
-      })
-      .catch((err) => {
-        setOpenAlert(true);
-        setAlertType('error');
-        setAlertMessage('Invalid credentials');
-      });
+    authenticate({ username: data.username, password: data.password });
   };
 
   return (
@@ -155,13 +127,23 @@ const Login = (props) => {
       <Box mt={8}>
         <Copyright />
       </Box>
-      <Snackbar open={openAlert} autoHideDuration={1000} onClose={handleCloseAlert}>
-        <Alert severity={alertType}>{alertMessage}</Alert>
+      <Snackbar open={hasError} autoHideDuration={5000}>
+        <Alert severity="error">Credentials invalid</Alert>
       </Snackbar>
     </Container>
   );
 };
 
-Login.propTypes = { history: PropTypes.objectOf(PropTypes.any) };
+Login.propTypes = {
+  authenticate: PropTypes.func.isRequired,
+  hasError: PropTypes.func.isRequired,
+};
 
-export default withRouter(Login);
+const mapStateToProps = createStructuredSelector({
+  hasError: selectHasError,
+});
+const mapDispatchToProps = {
+  authenticate: authenticateAction,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

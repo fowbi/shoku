@@ -1,23 +1,27 @@
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Page from '../Page';
 import Login from '../../pages/Login';
-import { getAccessToken } from '../../../utils/localStorage';
+import { selectIsAuthenticated } from '../../../domain/User/selectors';
 
 const PrivateRoute = (props) => {
-  const { component, ...options } = props;
+  const { component, isAuthenticated, ...options } = props;
 
-  const isAuthenticated = () => {
-    const token = getAccessToken();
-    return token !== null;
-  };
-
-  return <Route {...options} render={() => (isAuthenticated() ? <Page component={component} /> : <Login />)} />;
+  return <Route {...options} render={() => (isAuthenticated ? <Page component={component} /> : <Login />)} />;
 };
 
 PrivateRoute.propTypes = {
   component: PropTypes.node.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
-export default PrivateRoute;
+const mapStateToProps = createStructuredSelector({
+  isAuthenticated: selectIsAuthenticated,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PrivateRoute);
