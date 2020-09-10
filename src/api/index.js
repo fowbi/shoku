@@ -5,6 +5,7 @@ const apiAxiosClient = axios.create({
   baseURL: `${process.env.REACT_APP_BACKEND}`,
 });
 
+/* -- DEBUG START --------------------------------------------------- */
 apiAxiosClient.interceptors.request.use((request) => {
   console.log('Starting Request', request);
   return request;
@@ -14,6 +15,17 @@ apiAxiosClient.interceptors.response.use((response) => {
   console.log('Response:', response);
   return response;
 });
+/* -- DEBUG END --------------------------------------------------- */
+
+apiAxiosClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    console.log(error.response.status, error.response);
+    throw error;
+  }
+);
 
 apiAxiosClient.interceptors.request.use((request) => {
   request.headers['Authorization'] = `Bearer ${getAccessToken()}`;
