@@ -65,6 +65,10 @@ Api.prototype.setMealQuality = async function (id, quality) {
   return await this.apiClient.post(`/meal/setQuality/${id}`, { quality });
 };
 
+Api.prototype.setMealQuantity = async function (id, quantity) {
+  return await this.apiClient.post(`/meal/setQuantity/${id}`, { quantity });
+};
+
 const api = new Api(apiAxiosClient);
 
 export default api;
