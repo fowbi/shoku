@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 const useStyles = makeStyles((theme) => ({
   timeline: {
     width: '95%',
-    // maxWidth: '1170px',
     margin: '0 auto',
     position: 'relative',
     padding: '1em 0',
@@ -16,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       left: '18px',
       height: '100%',
       width: '4px',
-      background: theme.palette.primary.light,
+      background: theme.palette.secondary.main,
     },
     '&::after': {
       content: "''",

@@ -41,10 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   chooseExperienceOpen: {
     pointerEvents: 'auto',
-    backgroundColor: theme.palette.secondary.main,
-    borderTopRightRadius: '10%',
-    borderBottomRightRadius: '10%',
-    border: '1px solid white',
+    backgroundColor: theme.palette.primary.main,
   },
   chooseExperienceClosed: {
     transition: 'top 0s linear 0.2s',

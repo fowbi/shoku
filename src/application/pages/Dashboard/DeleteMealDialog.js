@@ -15,10 +15,10 @@ const DeleteMealDialog = (props) => {
       <DialogTitle id="form-dialog-title">Delete meal {message}</DialogTitle>
       <DialogContent />
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="secondary">
           Cancel
         </Button>
-        <Button color="primary" onClick={handleDeleteMeal}>
+        <Button color="secondary" onClick={handleDeleteMeal}>
           Remove
         </Button>
       </DialogActions>

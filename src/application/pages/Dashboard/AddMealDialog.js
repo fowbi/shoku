@@ -105,10 +105,10 @@ const AddMealDialog = (props) => {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="secondary">
           Cancel
         </Button>
-        <Button color="primary" onClick={handleAddMeal}>
+        <Button color="secondary" onClick={handleAddMeal}>
           Add
         </Button>
       </DialogActions>

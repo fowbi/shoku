@@ -12,15 +12,15 @@ function App(props) {
   const theme = createMuiTheme({
     palette: {
       primary: {
-        light: '#ffc4ff',
-        main: '#ce93d8',
-        dark: '#9c64a6',
+        light: '#ffffff',
+        main: '#fafafa',
+        dark: '#c7c7c7',
         contrastText: '#000',
       },
       secondary: {
-        light: '#df78ef',
-        main: '#ab47bc',
-        dark: '#790e8b',
+        light: '#484848',
+        main: '#212121',
+        dark: '#000000',
         contrastText: '#fff',
       },
     },
